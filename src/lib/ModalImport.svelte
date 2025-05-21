@@ -1,8 +1,8 @@
 <script>
 // @ts-nocheck
-  import { closeModal } from "../app";
+    import { closeModal } from "../app";
 
-  let result = "";
+    let result = "";
     let file = null;
 
     async function importBeneran() {
@@ -16,7 +16,7 @@
         formData.append("file", file);
         
         try {
-            const res = await fetch("http://localhost:8000/api/v1/import/csv", {
+            const res = await fetch(`http://localhost:8000/api/v1/import/${filetype}`, {
                 method: "POST",
                 body: formData
             });
@@ -39,8 +39,9 @@
     e.preventDefault();
     importBeneran();
     closeModal("import-modal");
-
 }}>
-    <input type="file" onchange="{(e) => file = e.target.files[0]}" accept=".{filetype}" />
-    <button type="submit">Import</button>
+    <div class="mb-3">
+        <input class="form-control" type="file" required onchange="{(e) => file = e.target.files[0]}" accept=".{filetype}" />
+    </div>
+    <button class="btn btn-primary btn-sm w-100" type="submit">Import</button>
 </form>
