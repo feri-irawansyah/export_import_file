@@ -4,3 +4,15 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+table td {
+  white-space: nowrap;
+}
+
+.fixed-table-border {
+  border: none !important;
+}
+
+.fixed-table-container {
+  border: none !important;
+}
