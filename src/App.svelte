@@ -17,6 +17,7 @@
 
   // @ts-ignore
   let connection = $state('')
+  let ws = $state(null);
 
   let result_progress = $state({
     isProgress: false,
@@ -30,35 +31,33 @@
   let filetype = $state("");
 
   function connectWs() {
-    return new WebSocket(`${socket_url}/generic/ws/`);
+    ws = new WebSocket(`${socket_url}/generic/ws/`);
+    attachWsHandlers(ws);
   }
 
-  onMount(() => {
-    const ws = connectWs();
-
+  function attachWsHandlers(ws) {
     ws.onopen = () => {
-        console.log("Connected");
-        connection = "Connected";
+      console.log("Connected");
+      connection = "Connected";
     };
 
     ws.onclose = () => {
-        console.log("Disconnected, trying to reconnect...");
-        connection = "Disconnected, trying to reconnect...";
-        setTimeout(() => {
-          connectWs();
-          window.location.reload();
-        }, 3000); // reconnect setelah 3 detik
+      console.log("Disconnected, reconnecting...");
+      connection = "Disconnected, reconnecting...";
+      setTimeout(() => {
+        connectWs();
+      }, 3000);
     };
 
     ws.onerror = (err) => {
-        console.error("Connection error:", err);
-        connection = "Connection error";
-        ws.close();
+      console.error("WebSocket error:", err);
+      connection = "Error";
+      ws.close();
     };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = (/** @type {{ data: any; }} */ event) => {
       const msg = JSON.parse(event.data);
-
+      
       if (msg.event === "import_progress") {
         result_progress.isProgress = true;
         result_progress.progress = msg.data.current;
@@ -79,7 +78,61 @@
         result_progress.done = false;
       }
     };
+  }
+
+  onMount(() => {
+    connectWs();
   });
+
+  
+
+  // onMount(() => {
+  //   const ws = connectWs();
+
+  //   ws.onopen = () => {
+  //       console.log("Connected");
+  //       connection = "Connected";
+  //   };
+
+  //   ws.onclose = () => {
+  //       console.log("Disconnected, trying to reconnect...");
+  //       connection = "Disconnected, trying to reconnect...";
+  //       setTimeout(() => {
+  //         connectWs();
+  //         window.location.reload();
+  //       }, 3000); // reconnect setelah 3 detik
+  //   };
+
+  //   ws.onerror = (err) => {
+  //       console.error("Connection error:", err);
+  //       connection = "Connection error";
+  //       ws.close();
+  //   };
+
+  //   ws.onmessage = (event) => {
+  //     const msg = JSON.parse(event.data);
+
+  //     if (msg.event === "import_progress") {
+  //       result_progress.isProgress = true;
+  //       result_progress.progress = msg.data.current;
+  //       result_progress.count = msg.data.total;
+  //       result_progress.message = `Importing ${msg.data.row} (${result_progress.progress} of ${result_progress.count})`;
+  //     }
+
+  //     if (msg.event === "import_done") {
+  //       result_progress.isProgress = false;
+  //       result_progress.message = msg.data.message;
+  //       result_progress.done = true;
+  //       globalThis.$("#myTable").bootstrapTable("refresh");
+  //     }
+  //     if (msg.event === "import_error") {
+  //       result_progress.isProgress = false;
+  //       result_progress.message = msg.data.message;
+  //       result_progress.error = msg.data.error;
+  //       result_progress.done = false;
+  //     }
+  //   };
+  // });
 
   function resetProgress() {
     result_progress = {
