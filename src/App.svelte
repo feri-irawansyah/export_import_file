@@ -16,7 +16,9 @@
   import TableData from "./lib/TableData.svelte";
 
   // @ts-ignore
-  let connection = $state('')
+  let connection = $state('');
+  let conn_class = $state('');
+
   let ws = $state(null);
 
   let result_progress = $state({
@@ -39,19 +41,22 @@
     ws.onopen = () => {
       console.log("Connected");
       connection = "Connected";
+      conn_class = "success";
     };
 
     ws.onclose = () => {
       console.log("Disconnected, reconnecting...");
       connection = "Disconnected, reconnecting...";
+      conn_class = "warning";
       setTimeout(() => {
         connectWs();
-      }, 3000);
+      }, 5000);
     };
 
     ws.onerror = (err) => {
       console.error("WebSocket error:", err);
       connection = "Error";
+      conn_class = "danger";
       ws.close();
     };
 
@@ -83,56 +88,6 @@
   onMount(() => {
     connectWs();
   });
-
-  
-
-  // onMount(() => {
-  //   const ws = connectWs();
-
-  //   ws.onopen = () => {
-  //       console.log("Connected");
-  //       connection = "Connected";
-  //   };
-
-  //   ws.onclose = () => {
-  //       console.log("Disconnected, trying to reconnect...");
-  //       connection = "Disconnected, trying to reconnect...";
-  //       setTimeout(() => {
-  //         connectWs();
-  //         window.location.reload();
-  //       }, 3000); // reconnect setelah 3 detik
-  //   };
-
-  //   ws.onerror = (err) => {
-  //       console.error("Connection error:", err);
-  //       connection = "Connection error";
-  //       ws.close();
-  //   };
-
-  //   ws.onmessage = (event) => {
-  //     const msg = JSON.parse(event.data);
-
-  //     if (msg.event === "import_progress") {
-  //       result_progress.isProgress = true;
-  //       result_progress.progress = msg.data.current;
-  //       result_progress.count = msg.data.total;
-  //       result_progress.message = `Importing ${msg.data.row} (${result_progress.progress} of ${result_progress.count})`;
-  //     }
-
-  //     if (msg.event === "import_done") {
-  //       result_progress.isProgress = false;
-  //       result_progress.message = msg.data.message;
-  //       result_progress.done = true;
-  //       globalThis.$("#myTable").bootstrapTable("refresh");
-  //     }
-  //     if (msg.event === "import_error") {
-  //       result_progress.isProgress = false;
-  //       result_progress.message = msg.data.message;
-  //       result_progress.error = msg.data.error;
-  //       result_progress.done = false;
-  //     }
-  //   };
-  // });
 
   function resetProgress() {
     result_progress = {
@@ -220,7 +175,7 @@
   }
 
 </script>
-<p class="text-danger">{connection}</p>
+<p class="bg-{conn_class} connection-status">{connection}</p>
 <section class="container">
   <div class="card">
     <div class="row">
@@ -294,6 +249,18 @@
     display: flex;
     flex-direction: column;
     border: none;
+  }
+
+  .connection-status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10px;
+    color: #fff;
+    font-weight: bold;
+    z-index: 9999;
   }
 
 </style>
