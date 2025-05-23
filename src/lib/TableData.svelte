@@ -20,7 +20,7 @@
             icon: "bi bi-trash",
             event: async function () {
                 resetProgress()
-                await fetch("http://localhost:8000/api/v1/data/clear", {
+                await fetch(`${base_url}/data/clear`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

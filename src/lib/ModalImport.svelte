@@ -1,6 +1,6 @@
 <script>
 // @ts-nocheck
-    import { closeModal } from "../app";
+    import { base_url, closeModal } from "../app";
 
     let result = "";
     let file = null;
@@ -16,7 +16,7 @@
         formData.append("file", file);
         
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/import/${filetype}`, {
+            const res = await fetch(`${base_url}/import/${filetype}`, {
                 method: "POST",
                 body: formData
             });

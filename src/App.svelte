@@ -57,27 +57,6 @@
     };
   });
 
-  // @ts-ignore
-  async function getHeader() {
-    try {
-      await fetch('http://localhost:8000/api/v1/data/get-table?tablename=TempImport&offset=0&limit=100&nidkey=TempImportNID', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then((res) => {
-        if (res.status == 200) {
-          return res.json()
-        }
-      }).then((data) => {
-        result = data
-      })
-    } catch (error) {
-      
-    }
-  }
-
   function resetProgress() {
     result_progress = {
       isProgress: false,
@@ -106,8 +85,8 @@
       contentType = "text/plain";
     } else if(filetype == "xlsx") {
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    } else if(filetype == "dbf") {
-      contentType = "application/octet-stream";
+    } else if(filetype == "pdf") {
+      contentType = "application/pdf";
     } else if(filetype == "xml") {
       contentType = "application/xml";
     }
@@ -121,6 +100,16 @@
     }).then((res) => {
       if (res.status == 200) {
         window.location.href = `${base_url}/export/${filetype}`;
+      } 
+
+      if (res.status == 404) {
+        Swal.fire({
+          title: "Error",
+          text: "File tidak ditemukan",
+          icon: "error",
+          backdrop: false,
+          confirmButtonText: "OK",
+        })
       }
     }).catch((err) => {
       Swal.fire({
@@ -133,11 +122,39 @@
     });
   }
 
+  async function downloadTemplate(fileName) {
+    const response = await fetch(`/files/${fileName}`);
+    if (!response.ok) {
+      console.error("Download gagal:", response.statusText);
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    window.URL.revokeObjectURL(url);
+  }
+
 </script>
 <section class="container">
   <div class="card">
-    <span class="fs-3 fw-bold">Snakesystem Import Export File</span>
-    <ResultProgress result_progress={result_progress}/>
+    <div class="row">
+      <div class="col-lg-6">
+        <span class="fs-3 fw-bold">Snakesystem Import Export File</span>
+        <ResultProgress result_progress={result_progress}/>
+      </div>
+      <div class="col-lg-6">
+        <button class="btn btn-secondary" onclick={() => downloadTemplate("tempimport.dbf")}>Download Template</button>
+        <button class="btn btn-warning" onclick={() => downloadTemplate("big_data.xlsx")}>Big Data Template</button>
+      </div>
+    </div>
     
     <div class="d-flex flex-column toolbar">
       <div class="button-container row justify-content-center">
@@ -169,8 +186,8 @@
         <button class="btn btn-success" aria-label="Basic example" onclick={() => DownloadFile("csv")}><i class="bi bi-download"></i> .csv</button>
         <button class="btn btn-info" aria-label="Basic example" onclick={() => DownloadFile("txt")}><i class="bi bi-download"></i> .txt</button>
         <button class="btn btn-danger" aria-label="Basic example" onclick={() => DownloadFile("xlsx")}><i class="bi bi-download"></i> .xlsx</button>
-        <button class="btn btn-primary" aria-label="Basic example"><i class="bi bi-download"></i> .dbf</button>
-        <button class="btn btn-warning" aria-label="Basic example"><i class="bi bi-download"></i> .xml</button>
+        <button class="btn btn-primary" aria-label="Basic example" onclick={() => DownloadFile("pdf")}><i class="bi bi-download"></i> .pdf</button>
+        <button class="btn btn-warning" aria-label="Basic example" onclick={() => DownloadFile("xml")}><i class="bi bi-download"></i> .xml</button>
       </div>
     </div>
      <!-- Disini bisa di isi apa gitu -->
