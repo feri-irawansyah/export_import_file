@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 export const base_url = "https://snakesystem-web-api-tdam.shuttle.app/api/v1";
-export const socket_url = "ws://snakesystem-web-api-tdam.shuttle.app/api/v1";
+export const socket_url = "wss://snakesystem-web-api-tdam.shuttle.app/api/v1";
 
 export const modals = writable({});
 
