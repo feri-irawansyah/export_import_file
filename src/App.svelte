@@ -44,7 +44,10 @@
     ws.onclose = () => {
         console.log("Disconnected, trying to reconnect...");
         connection = "Disconnected, trying to reconnect...";
-        setTimeout(connectWs, 3000); // reconnect setelah 3 detik
+        setTimeout(() => {
+          connectWs();
+          window.location.reload();
+        }, 3000); // reconnect setelah 3 detik
     };
 
     ws.onerror = (err) => {
