@@ -4,7 +4,7 @@
     const { result_progress } = $props();
 </script>
 
-<div class="col-lg-6 progress-bar">
+<div class="progress-bar">
     <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow={result_progress.progress} aria-valuemin="0" aria-valuemax={result_progress.count}>
     <div class="progress-bar" style="width: {result_progress.count > 0 ? (result_progress.progress / result_progress.count) * 100 : 0}%"></div>
     </div>

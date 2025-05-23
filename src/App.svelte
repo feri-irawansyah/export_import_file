@@ -150,9 +150,9 @@
         <span class="fs-3 fw-bold">Snakesystem Import Export File</span>
         <ResultProgress result_progress={result_progress}/>
       </div>
-      <div class="col-lg-6">
-        <button class="btn btn-secondary" onclick={() => downloadTemplate("tempimport.dbf")}>Download Template</button>
-        <button class="btn btn-warning" onclick={() => downloadTemplate("big_data.xlsx")}>Big Data Template</button>
+      <div class="col-lg-6 text-end">
+        <button class="btn btn-secondary" onclick={() => downloadTemplate("tempimport.dbf")}><i class="bi bi-download"></i> Download Template</button>
+        <button class="btn btn-warning" onclick={() => downloadTemplate("big_data.xlsx")}><i class="bi bi-download"></i> Big Data Template</button>
       </div>
     </div>
     
