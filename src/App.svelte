@@ -123,7 +123,7 @@
   }
 
   async function downloadTemplate(fileName) {
-    const response = await fetch(`/files/${fileName}`);
+    const response = await fetch(`/templates/${fileName}`);
     if (!response.ok) {
       console.error("Download gagal:", response.statusText);
       return;
