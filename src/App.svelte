@@ -1,5 +1,6 @@
 <script>
   // @ts-ignore
+  // @ts-ignore
   import jQuery from 'jquery';
   // @ts-ignore
   window.$ = window.jQuery = jQuery;
@@ -9,14 +10,13 @@
   import ModalContainer from "./lib/ModalContainer.svelte";
   import ModalImport from "./lib/ModalImport.svelte";
   import { base_url, openModal, socket_url } from "./app";
+  // @ts-ignore
   import ButtonClear from "./lib/ButtonClear.svelte";
   import ResultProgress from "./lib/ResultProgress.svelte";
   import TableData from "./lib/TableData.svelte";
 
-  let result = $state({
-    total: true,
-    rows: []
-  })
+  // @ts-ignore
+  let connection = $state('')
 
   let result_progress = $state({
     isProgress: false,
@@ -29,31 +29,52 @@
 
   let filetype = $state("");
 
+  function connectWs() {
+    return new WebSocket(`${socket_url}/generic/ws/`);
+  }
+
   onMount(() => {
-    const ws = new WebSocket(`${socket_url}/generic/ws/`);
+    const ws = connectWs();
+
+    ws.onopen = () => {
+        console.log("Connected");
+        connection = "Connected";
+    };
+
+    ws.onclose = () => {
+        console.log("Disconnected, trying to reconnect...");
+        connection = "Disconnected, trying to reconnect...";
+        setTimeout(connectWs, 3000); // reconnect setelah 3 detik
+    };
+
+    ws.onerror = (err) => {
+        console.error("Connection error:", err);
+        connection = "Connection error";
+        ws.close();
+    };
 
     ws.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
+      const msg = JSON.parse(event.data);
 
-        if (msg.event === "import_progress") {
-            result_progress.isProgress = true;
-            result_progress.progress = msg.data.current;
-            result_progress.count = msg.data.total;
-            result_progress.message = `Importing ${msg.data.row} (${result_progress.progress} of ${result_progress.count})`;
-        }
+      if (msg.event === "import_progress") {
+        result_progress.isProgress = true;
+        result_progress.progress = msg.data.current;
+        result_progress.count = msg.data.total;
+        result_progress.message = `Importing ${msg.data.row} (${result_progress.progress} of ${result_progress.count})`;
+      }
 
-        if (msg.event === "import_done") {
-            result_progress.isProgress = false;
-            result_progress.message = msg.data.message;
-            result_progress.done = true;
-            globalThis.$("#myTable").bootstrapTable("refresh");
-        }
-        if (msg.event === "import_error") {
-            result_progress.isProgress = false;
-            result_progress.message = msg.data.message;
-            result_progress.error = msg.data.error;
-            result_progress.done = false;
-        }
+      if (msg.event === "import_done") {
+        result_progress.isProgress = false;
+        result_progress.message = msg.data.message;
+        result_progress.done = true;
+        globalThis.$("#myTable").bootstrapTable("refresh");
+      }
+      if (msg.event === "import_error") {
+        result_progress.isProgress = false;
+        result_progress.message = msg.data.message;
+        result_progress.error = msg.data.error;
+        result_progress.done = false;
+      }
     };
   });
 
@@ -143,6 +164,7 @@
   }
 
 </script>
+<p class="text-danger">{connection}</p>
 <section class="container">
   <div class="card">
     <div class="row">
