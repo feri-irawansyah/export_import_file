@@ -15,8 +15,8 @@
   import TableData from "./lib/TableData.svelte";
 
   // @ts-ignore
-  let connection = $state('');
-  let conn_class = $state('');
+  let connection = $state('started');
+  let conn_class = $state('info');
 
   let ws = $state(null);
 
