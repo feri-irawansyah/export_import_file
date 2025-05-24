@@ -6,7 +6,7 @@
 
 <div class="progress-bar">
     <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow={result_progress.progress} aria-valuemin="0" aria-valuemax={result_progress.count}>
-    <div class="progress-bar" style="width: {result_progress.count > 0 ? (result_progress.progress / result_progress.count) * 100 : 0}%"></div>
+        <div class="progress-bar bg-success" style="width: {result_progress.count > 0 ? (result_progress.progress / result_progress.count) * 100 : 0}%"></div>
     </div>
     <div class="d-flex">
         <strong class="me-2">Progress Import:</strong>
@@ -32,4 +32,5 @@
         padding: 0;
         border: 0;
     }
+    
 </style>

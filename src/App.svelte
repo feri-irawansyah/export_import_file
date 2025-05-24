@@ -174,13 +174,15 @@
   }
 
 </script>
-<p class="bg-{conn_class} connection-status">{connection}</p>
 <section class="container">
   <div class="card">
     <div class="row">
       <div class="col-lg-6">
         <span class="fs-3 fw-bold">Snakesystem Import Export File</span>
         <ResultProgress result_progress={result_progress}/>
+      </div>
+      <div class="col-lg-6">
+        <p class="connection-status w-100 btn btn-outline-{conn_class}">{connection}</p>
       </div>
     </div>
     
@@ -262,15 +264,14 @@
   }
 
   .connection-status {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     text-align: center;
+    margin-top: 2rem;
     padding: 10px;
     color: #fff;
     font-weight: bold;
     z-index: 9999;
+    border-radius: 5px;
+    cursor: text;
   }
 
 </style>
