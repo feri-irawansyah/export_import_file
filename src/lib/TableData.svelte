@@ -63,7 +63,7 @@
         method: "GET",
         buttons: toolbarButton(),
         contentType: "application/json",
-        buttonsClass: "primary",
+        buttonsClass: "none",
         dataType: "json",
         buttonsAlign: "left",
         toolbarAlign: "right",
@@ -77,17 +77,89 @@
         toolbar: ".toolbar",
         offset: 0,
         pageSize: 10,
-        pageList: [100, 200, 500],
+        pageList: [10, 100, 200, 500, 1000],
         height: 600,
         columns: tableFormatter(columns),
         });
     }
+
+    const dumy_columns = [
+		{
+			"field": "TempImportNID",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Temp Import NID"
+		},
+		{
+			"field": "Email",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Email"
+		},
+		{
+			"field": "FullName",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Full Name"
+		},
+		{
+			"field": "Age",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Age"
+		},
+		{
+			"field": "Sex",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Sex"
+		},
+		{
+			"field": "Contact",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Contact"
+		},
+		{
+			"field": "ProductName",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Product Name"
+		},
+		{
+			"field": "ProductCount",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Product Count"
+		},
+		{
+			"align": "right",
+			"field": "Price",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "Price"
+		},
+		{
+			"field": "IPAddress",
+			"filterControl": "input",
+			"sortable": true,
+			"title": "IPAddress"
+		},
+		{
+			"field": "LastUpdate",
+			"filterControl": "date",
+			"formatter": "dateFormatter",
+			"sortable": true,
+			"title": "Last Update"
+		}
+	]
 
     onMount(async () => {
         result = await fetchColumns(tablename);
         if (result.result && result.data && Array.isArray(result.data)) {
             initTable(result.data);
         } else {
+            initTable(dumy_columns);
             console.error("Data columns not valid", result);
         }
     });

@@ -1,6 +1,5 @@
 <script>
   // @ts-ignore
-  // @ts-ignore
   import jQuery from 'jquery';
   // @ts-ignore
   window.$ = window.jQuery = jQuery;
@@ -183,46 +182,56 @@
         <span class="fs-3 fw-bold">Snakesystem Import Export File</span>
         <ResultProgress result_progress={result_progress}/>
       </div>
-      <div class="col-lg-6 text-end">
-        <button class="btn btn-secondary" onclick={() => downloadTemplate("tempimport.dbf")}><i class="bi bi-download"></i> Download Template</button>
-        <button class="btn btn-warning" onclick={() => downloadTemplate("big_data.xlsx")}><i class="bi bi-download"></i> Big Data Template</button>
-      </div>
     </div>
     
-    <div class="d-flex flex-column toolbar">
-      <div class="button-container row justify-content-center">
-      <div class="col-lg-6 text-start">
-        <!-- <h5 class="mb-3">Import Data</h5> -->
-        <button class="btn btn-success" aria-label="Basic example" onclick={() => {
-          filetype = "csv",
-          openModal("import-modal")
-        }}><i class="bi bi-filetype-csv"></i> .csv</button>
-        <button class="btn btn-info" aria-label="Basic example" onclick={() => {
-          filetype = "txt",
-          openModal("import-modal")
-        }}><i class="bi bi-filetype-txt"></i> .txt</button>
-        <button class="btn btn-danger" aria-label="Basic example" onclick={() => {
-          filetype = "xlsx",
-          openModal("import-modal")
-        }}><i class="bi bi-filetype-xlsx"></i> .xlsx</button>
-        <button class="btn btn-primary" aria-label="Basic example" onclick={() => {
-          filetype = "dbf",
-          openModal("import-modal")
-        }}><i class="bi bi-database"></i> .dbf</button>
-        <button class="btn btn-warning" aria-label="Basic example" onclick={() => {
-          filetype = "xml",
-          openModal("import-modal")
-        }}><i class="bi bi-filetype-xml"></i> .xml</button>
+    <div class="d-flex toolbar">
+      <div class="dropdown">
+        <button class="btn dropdown-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Import <span>Group</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => {
+                filetype = "csv",
+                openModal("import-modal")
+              }}><i class="bi bi-filetype-csv"></i> .csv</button>
+              <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => {
+                filetype = "txt",
+                openModal("import-modal")
+              }}><i class="bi bi-filetype-txt"></i> .txt</button>
+              <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => {
+                filetype = "xlsx",
+                openModal("import-modal")
+              }}><i class="bi bi-filetype-xlsx"></i> .xlsx</button>
+              <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => {
+                filetype = "dbf",
+                openModal("import-modal")
+              }}><i class="bi bi-database"></i> .dbf</button>
+              <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => {
+                filetype = "xml",
+                openModal("import-modal")
+              }}><i class="bi bi-filetype-xml"></i> .xml</button>
+            </li>
+          </ul>
       </div>
-      <div class="col-lg-6 text-start">
-        <!-- <h5 class="mb-3">Export Data</h5> -->
-        <button class="btn btn-success" aria-label="Basic example" onclick={() => DownloadFile("csv")}><i class="bi bi-download"></i> .csv</button>
-        <button class="btn btn-info" aria-label="Basic example" onclick={() => DownloadFile("txt")}><i class="bi bi-download"></i> .txt</button>
-        <button class="btn btn-danger" aria-label="Basic example" onclick={() => DownloadFile("xlsx")}><i class="bi bi-download"></i> .xlsx</button>
-        <button class="btn btn-primary" aria-label="Basic example" onclick={() => DownloadFile("pdf")}><i class="bi bi-download"></i> .pdf</button>
-        <button class="btn btn-warning" aria-label="Basic example" onclick={() => DownloadFile("xml")}><i class="bi bi-download"></i> .xml</button>
+      <div class="dropdown">
+        <button class="btn dropdown-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Export <span>Group</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => DownloadFile("csv")}><i class="bi bi-download"></i> .csv</button>
+            <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => DownloadFile("txt")}><i class="bi bi-download"></i> .txt</button>
+            <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => DownloadFile("xlsx")}><i class="bi bi-download"></i> .xlsx</button>
+            <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => DownloadFile("pdf")}><i class="bi bi-download"></i> .pdf</button>
+            <button class="btn btn-outline-success" aria-label="Basic example" onclick={() => DownloadFile("xml")}><i class="bi bi-download"></i> .xml</button>
+          </li>
+        </ul>
       </div>
-    </div>
+      <div class="template-button">
+        <button class="btn" onclick={() => downloadTemplate("tempimport.dbf")}><i class="bi bi-download"></i> <span>Template</span> DBF</button>
+        <button class="btn" onclick={() => downloadTemplate("big_data.xlsx")}><i class="bi bi-download"></i> <span>1000</span> Data</button>
+      </div>
      <!-- Disini bisa di isi apa gitu -->
     </div>
     <TableData resetProgress={resetProgress}/>
@@ -240,6 +249,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2rem;
   }
 
   .card {

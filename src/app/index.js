@@ -47,6 +47,7 @@ export const tableFormatter = (columns) => {
       const colname = column.field?.toLowerCase();
       switch (colname) {
           case 'autonid':
+          case 'tempimportnid':
               return { ...column, visible: false, sortable: false };
           case 'email':
               return { ...column, sortable: false }
